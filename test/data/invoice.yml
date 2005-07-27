@@ -1,0 +1,14 @@
+--- 
+invoice_number: 1
+debitor_address: |
+ Debitor AG
+ z.H. Herr Ausleih Schlumpf
+ Pilzstrasse 123
+ 7777 Schlumpfhausen
+items:
+ - 
+  - 2005-07-27
+  - Item 1
+  - Unit
+  - 1
+  - 2500

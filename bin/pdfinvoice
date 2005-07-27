@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+# bin/pdfinvoice -- pdfinvoice -- 27.07.2005 -- hwyss@ywesee.com
+
+require 'yaml'
+require 'pdfinvoice/invoice'
+require 'rclconf'
+
+if(ARGV.size < 2)
+	puts "Usage: #$0 <source.yml> <target.pdf>"
+	exit -1
+end
+
+module PdfInvoice
+	source_path = File.expand_path(ARGV.shift)
+	target_path = File.expand_path(ARGV.shift)
+
+	default_dir = File.join(ENV['HOME'], '.pdfinvoice')
+	default_config_files = [
+		File.join(default_dir, 'config.yml'),
+		'/etc/pdfinvoice/config.yml',
+	]
+	defaults = {
+		'colors'						=> {
+			'items'						=> [0xF8, 0xF8, 0xF8],	
+			'total'						=> [0xF0, 0xF0, 0xF0],	
+		},
+		'config'						=> default_config_files,
+		'creditor_address'	=> '',
+		'creditor_email'		=> '',
+		'creditor_bank'			=> '',
+		'due_days'					=> '',
+		'font'							=> 'Helvetica',
+		'font_b'						=> 'Helvetica-Bold',
+		'formats'						=> {
+			'currency'				=> "%1.2f",
+			'date'						=> "%d.%m.%Y",
+			'invoice_number'	=> "<b>#%06i</b>",
+		},
+		'logo_path'					=> nil,
+		'logo_link'					=> nil,
+		'tax'								=> 0,
+		'texts'							=> {
+			'date'						=> 'Date',	
+			'description'			=> 'Description',
+			'unit'						=> 'Unit',
+			'quantity'				=> 'Quantity',
+			'price'						=> 'Price',
+			'item_total'			=> 'Item Total',
+			'subtotal'				=> 'Subtotal',
+			'tax'							=> 'Tax',
+			'total'						=> 'Total',
+		},
+		'text_options'			=> {:spacing => 1.25},
+	}
+	config = RCLConf::RCLConf.new(ARGV, defaults)
+	config.load(config.config)
+
+	source = YAML.load(File.read(source_path))
+	File.open(target_path, File::CREAT|File::WRONLY) { |fh|
+		invoice = Invoice.new(config)
+		invoice.invoice_number = source['invoice_number']
+		invoice.debitor_address = source['debitor_address']
+		invoice.items = source['items']
+		fh.puts invoice.to_pdf
+	}
+end
