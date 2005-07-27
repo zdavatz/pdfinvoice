@@ -12,7 +12,7 @@ creditor_bank: |
 due_days: "Bedingungen: zahlbar in 10 Tagen"
 formats:
  currency: CHF %1.2f
- date: %d %m %Y
+ date: %d.%m.%Y
  invoice_number: "<b>Rechnung #%06i</b>"
 logo_path: /etc/pdfinvoice/logo.png
 logo_link: 
@@ -28,4 +28,5 @@ texts:
  item_total: Betrag
  subtotal: Zwischensumme
  tax: MwSt 7.6%
+ thanks: Thank you for your patronage
  total: Fälliger Betrag

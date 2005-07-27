@@ -22,11 +22,18 @@ module PdfInvoice
 			pdf.select_font(@config.font)
 			pdf_header(pdf)
 			pdf_items(pdf)
+			pdf_footer(pdf)
 			pdf.render
 		end
 		private
 		def currency_format(amount)
 			sprintf(@config.formats['currency'], amount)
+		end
+		def pdf_footer(pdf)
+			if(txt = @config.texts['thanks'])
+				pdf.move_pointer(pdf.font_height)
+				pdf.text(txt, @config.text_options)
+			end
 		end
 		def pdf_header(pdf)
 			if(path = @config.logo_path)
@@ -99,7 +106,7 @@ module PdfInvoice
 						'date'				=> date,
 						'description'	=> line.at(1),
 						'unit'				=> line.at(2),
-						'quantity'		=> line.at(3),
+						'quantity'		=> sprintf('%1.2f', line.at(3)),
 						'price'				=> currency_format(line.at(4)),
 						'item_total'	=> currency_format(item_total),
 					}

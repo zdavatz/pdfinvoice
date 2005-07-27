@@ -56,6 +56,7 @@ IBAN: CH450025125180888801M
 					'item_total'			=> 'Betrag',
 					'subtotal'				=> 'Zwischensumme',
 					'tax'							=> 'MwSt 7.6%',
+					'thanks'					=> 'Thank you for your patronage',
 					'total'						=> 'Fälliger Betrag',
 				},
 				'text_options'			=> {:spacing => 1.25},
@@ -140,6 +141,15 @@ Pilzstrasse 123
 				"(z.H. Herr Ausleih Schlumpf)",
 				"(Pilzstrasse 123)",
 				"(7777 Schlumpfhausen)",
+			].each { |line|
+				assert_not_nil(pdf.index(line), 
+					"could not find #{line} in the generated pdf")
+			}
+		end
+		def test_to_pdf__footer
+			pdf = @invoice.to_pdf
+			[
+				"(Thank you for your patronage)",
 			].each { |line|
 				assert_not_nil(pdf.index(line), 
 					"could not find #{line} in the generated pdf")

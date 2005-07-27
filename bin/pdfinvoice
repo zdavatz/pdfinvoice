@@ -21,7 +21,7 @@ module PdfInvoice
 	]
 	defaults = {
 		'colors'						=> {
-			'items'						=> [0xF8, 0xF8, 0xF8],	
+			'items'						=> [0xFA, 0xFA, 0xFA],	
 			'total'						=> [0xF0, 0xF0, 0xF0],	
 		},
 		'config'						=> default_config_files,
@@ -48,6 +48,7 @@ module PdfInvoice
 			'item_total'			=> 'Item Total',
 			'subtotal'				=> 'Subtotal',
 			'tax'							=> 'Tax',
+			'thanks'					=> nil,
 			'total'						=> 'Total',
 		},
 		'text_options'			=> {:spacing => 1.25},
