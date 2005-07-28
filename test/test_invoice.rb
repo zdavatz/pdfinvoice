@@ -7,8 +7,6 @@ require 'test/unit'
 require 'pdfinvoice/invoice'
 require 'rclconf'
 
-load '/home/hwyss/cogito/pdf-writer-1.1.1/lib/pdf/writer/object/image.rb'
-
 module PdfInvoice
 	class TestInvoice < Test::Unit::TestCase
 		def setup
