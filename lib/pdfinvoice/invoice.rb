@@ -69,7 +69,7 @@ module PdfInvoice
 			sstyle.dash = { :pattern => [1] }
 			pdf.start_columns(1)
 			pdf.move_pointer(pdf.font_height)
-			total = 0
+			total = 0.0
 			left = 0
 			width = 0
 			col_width = 0
@@ -90,9 +90,9 @@ module PdfInvoice
 						|column|
 						column.heading = PDF::SimpleTable::Column::Heading.new(col)
 						column.heading.title = headings.at(idx)
-						column.heading.justification = :center
 						if(['quantity', 'price', 'item_total'].include?(col))
 							column.justification = :right
+							column.heading.justification = :right
 						end
 					}
 				}
@@ -134,9 +134,9 @@ module PdfInvoice
 					{	'date' => @config.texts['subtotal'], 
 						'total' => currency_format(total)},
 					{	'date' => @config.texts['tax'], 
-						'total' => currency_format(total * @config.tax) },
+						'total' => currency_format(total * @config.tax.to_f) },
 					{	'date' => @config.texts['total'], 
-						'total' => currency_format(total * (1 + @config.tax)) },
+						'total' => currency_format(total * (1.0 + @config.tax.to_f)) },
 				]
 				table.show_headings = false
 				table.position = left

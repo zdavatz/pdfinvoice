@@ -13,7 +13,7 @@ due_days: "Bedingungen: zahlbar in 10 Tagen"
 formats:
  currency: CHF %1.2f
  date: %d.%m.%Y
- invoice_number: "<b>Rechnung #%06i</b>"
+ invoice_number: "<b>Rechnung %s</b>"
 logo_path: /etc/pdfinvoice/logo.png
 logo_link: 
  :type: :external
