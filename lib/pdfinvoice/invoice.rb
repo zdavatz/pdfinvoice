@@ -19,6 +19,8 @@ module PdfInvoice
 		end
 		def to_pdf
 			pdf = PDF::Writer.new
+			pdf.margins_pt(pdf.mm2pts(15), pdf.mm2pts(25), 
+				pdf.mm2pts(15), pdf.mm2pts(15))
 			pdf.select_font(@config.font)
 			pdf_header(pdf)
 			pdf_items(pdf)
