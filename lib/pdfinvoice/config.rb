@@ -24,6 +24,7 @@ module PdfInvoice
 			'font_b'						=> 'Helvetica-Bold',
 			'formats'						=> {
 				'currency'				=> "%1.2f",
+				'total'						=> "%1.2f",
 				'date'						=> "%d.%m.%Y",
 				'invoice_number'	=> "<b>#%06i</b>",
 			},

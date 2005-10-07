@@ -28,8 +28,8 @@ module PdfInvoice
 			pdf.render
 		end
 		private
-		def currency_format(amount)
-			sprintf(@config.formats['currency'], amount)
+		def currency_format(amount, fmt='currency')
+			sprintf(@config.formats[fmt], amount)
 		end
 		def pdf_footer(pdf)
 			if(txt = @config.texts['thanks'])
@@ -134,11 +134,13 @@ module PdfInvoice
 				table.column_order = ['date', 'total']
 				table.data = [
 					{	'date' => @config.texts['subtotal'], 
-						'total' => currency_format(total)},
+						'total' => currency_format(total, 'total')},
 					{	'date' => @config.texts['tax'], 
-						'total' => currency_format(total * @config.tax.to_f) },
+						'total' => currency_format(total * @config.tax.to_f, 
+							'total') },
 					{	'date' => @config.texts['total'], 
-						'total' => currency_format(total * (1.0 + @config.tax.to_f)) },
+						'total' => currency_format(total * (1 + @config.tax.to_f),
+							'total') },
 				]
 				table.show_headings = false
 				table.position = left
