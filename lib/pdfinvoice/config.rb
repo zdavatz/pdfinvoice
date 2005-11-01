@@ -5,7 +5,7 @@ require 'rclconf'
 
 module PdfInvoice
 	def PdfInvoice.config(argv=[])
-		default_dir = File.join(ENV['HOME'], '.pdfinvoice')
+		default_dir = File.join(ENV['HOME'].to_s, '.pdfinvoice')
 		default_config_files = [
 			File.join(default_dir, 'config.yml'),
 			'/etc/pdfinvoice/config.yml',
