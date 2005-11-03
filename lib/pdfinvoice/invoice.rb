@@ -108,7 +108,7 @@ module PdfInvoice
 						'date'				=> date,
 						'description'	=> line.at(1),
 						'unit'				=> line.at(2),
-						'quantity'		=> sprintf('%1.2f', line.at(3)),
+						'quantity'		=> sprintf('%1.3f', line.at(3)),
 						'price'				=> currency_format(line.at(4)),
 						'item_total'	=> currency_format(item_total),
 					}
