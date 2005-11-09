@@ -28,6 +28,12 @@ module PdfInvoice
 			pdf.render
 		end
 		private
+		def calculate_column_widths(pdf, widths, data)
+			data.each { |key, text|
+				widths[key] = [widths[key], text_width(pdf, text)].max
+			}
+			widths
+		end
 		def currency_format(amount, fmt='currency')
 			sprintf(@config.formats[fmt], amount)
 		end
@@ -76,16 +82,20 @@ module PdfInvoice
 			width = 0
 			col_width = 0
 			row_gap = 4
+			columns = ['date', 'description', 'unit', 'quantity', 'price', 
+				'item_total']
+			column_widths = {}
 			pdf.select_font(@config.font_b)
+			headings = columns.collect { |col| 
+				heading = @config.texts[col] 
+				column_widths.store(col, text_width(pdf, heading))
+				heading
+			}
 			['Zwischensumme', 'MwSt 7.5%', 'Fälliger Betrag'].each { |title|
-				cw = pdf.text_width(title) * PDF::SimpleTable::WIDTH_FACTOR
-				col_width = [col_width, cw].max
+				calculate_column_widths(pdf, column_widths, {'date' => title})
 			}
 			pdf.select_font(@config.font)
 			PDF::SimpleTable.new { |table|
-				columns = ['date', 'description', 'unit', 'quantity', 'price', 
-					'item_total']
-				headings = columns.collect { |col| @config.texts[col] }
 				table.column_order = columns
 				columns.each_with_index { |col, idx|
 					table.columns[col] = PDF::SimpleTable::Column.new('date') { 
@@ -103,8 +113,8 @@ module PdfInvoice
 					total += item_total
 					date = line.at(0).strftime(@config.formats['date'])
 					cw = pdf.text_width(date) * PDF::SimpleTable::WIDTH_FACTOR
-					col_width = [col_width, cw].max
-					{
+					#col_width = [col_width, cw].max
+					data = {
 						'date'				=> date,
 						'description'	=> line.at(1),
 						'unit'				=> line.at(2),
@@ -112,9 +122,16 @@ module PdfInvoice
 						'price'				=> currency_format(line.at(4)),
 						'item_total'	=> currency_format(item_total),
 					}
+					calculate_column_widths(pdf, column_widths, data)
+					data
 				}
-				col_width += 2 * table.column_gap
-				table.columns['date'].width = col_width
+				column_widths.each { |key, col_width|
+					unless(key == 'description')
+						table.columns[key].width = col_width + 2 * table.column_gap
+					end
+				}
+				#col_width += 2 * table.column_gap
+				#table.columns['date'].width = col_width
 				table.position = left = pdf.left_margin + table.column_gap
 				table.orientation = :right
 				table.width = width = pdf.margin_width - 2 * table.column_gap
@@ -148,7 +165,7 @@ module PdfInvoice
 				table.width = width 
 				table.columns['date'] = PDF::SimpleTable::Column.new('date') { 
 					|column|
-					column.width = col_width
+					column.width = column_widths['date'] + 2 * table.column_gap
 				}
 				table.columns['total'] = PDF::SimpleTable::Column.new('date') {
 					|column|
@@ -171,6 +188,9 @@ module PdfInvoice
 					pdf.text(line.strip, @config.text_options) 
 				}
 			end
+		end
+		def	text_width(pdf, text)
+			pdf.text_width(text) * PDF::SimpleTable::WIDTH_FACTOR
 		end
 	end
 end
