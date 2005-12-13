@@ -27,6 +27,7 @@ module PdfInvoice
 				'total'						=> "%1.2f",
 				'date'						=> "%d.%m.%Y",
 				'invoice_number'	=> "<b>#%06i</b>",
+				'quantity'				=> '%1.1f',
 			},
 			'logo_path'					=> nil,
 			'logo_link'					=> nil,

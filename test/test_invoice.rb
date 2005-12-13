@@ -39,6 +39,7 @@ IBAN: CH450025125180888801M
 					'currency'				=> "CHF %1.2f",
 					'date'						=> "%d.%m.%Y",
 					'invoice_number'	=> "<b>Rechnung #%06i</b>",
+					'quantity'				=> '%1.3f',
 				},
 				'logo_path'					=> logo_path,
 				'logo_link'					=> {

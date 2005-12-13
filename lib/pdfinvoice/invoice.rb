@@ -80,7 +80,6 @@ module PdfInvoice
 			total = 0.0
 			left = 0
 			width = 0
-			col_width = 0
 			row_gap = 4
 			columns = ['date', 'description', 'unit', 'quantity', 'price', 
 				'item_total']
@@ -113,12 +112,11 @@ module PdfInvoice
 					total += item_total
 					date = line.at(0).strftime(@config.formats['date'])
 					cw = pdf.text_width(date) * PDF::SimpleTable::WIDTH_FACTOR
-					#col_width = [col_width, cw].max
 					data = {
 						'date'				=> date,
 						'description'	=> line.at(1),
 						'unit'				=> line.at(2),
-						'quantity'		=> sprintf('%1.3f', line.at(3)),
+						'quantity'		=> sprintf(@config.formats['quantity'], line.at(3)),
 						'price'				=> currency_format(line.at(4)),
 						'item_total'	=> currency_format(item_total),
 					}
@@ -130,8 +128,6 @@ module PdfInvoice
 						table.columns[key].width = col_width + 2 * table.column_gap
 					end
 				}
-				#col_width += 2 * table.column_gap
-				#table.columns['date'].width = col_width
 				table.position = left = pdf.left_margin + table.column_gap
 				table.orientation = :right
 				table.width = width = pdf.margin_width - 2 * table.column_gap
