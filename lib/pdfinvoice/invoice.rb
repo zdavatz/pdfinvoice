@@ -11,7 +11,7 @@ require 'pdf/simpletable'
 
 module PdfInvoice
 	class Invoice
-		attr_accessor :invoice_number, :debitor_address, :items
+		attr_accessor :invoice_number, :debitor_address, :items, :date
 		def initialize(config)
 			@config = config
 			@date = Date.today
