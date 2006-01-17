@@ -11,7 +11,7 @@ require 'pdf/simpletable'
 
 module PdfInvoice
 	class Invoice
-		attr_accessor :invoice_number, :debitor_address, :items, :date
+		attr_accessor :invoice_number, :debitor_address, :items, :date, :description
 		def initialize(config)
 			@config = config
 			@date = Date.today
@@ -54,6 +54,7 @@ module PdfInvoice
 			pdf.start_columns(2)
 			pdf.text(sprintf(@config.formats['invoice_number'], 
 				@invoice_number), @config.text_options) 
+			pdf.text(@description.to_s, @config.text_options) 
 			pdf.start_new_page
 			pdf_lines(pdf, @config.creditor_address)
 			pdf.stop_columns

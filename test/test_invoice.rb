@@ -110,6 +110,18 @@ IBAN: CH450025125180888801M
 			assert_not_nil(pdf.index(line), 
 				"could not find #{line} in the generated pdf")
 		end
+		def test_to_pdf__invoice_number_description
+			@invoice.invoice_number = 64
+			@invoice.description = 'description'
+			pdf = @invoice.to_pdf
+			[
+				"(Rechnung #000064)",
+				"(description)",
+			].each { |line|
+				assert_not_nil(pdf.index(line), 
+					"could not find #{line} in the generated pdf")
+			}
+		end
 		def test_to_pdf__debitor_address_1
 			@invoice.debitor_address = <<-EOS
 Debitor AG
