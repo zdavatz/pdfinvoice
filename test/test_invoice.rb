@@ -8,6 +8,9 @@ require 'pdfinvoice/invoice'
 require 'rclconf'
 
 module PdfInvoice
+  class Invoice
+    public :number_format
+  end
 	class TestInvoice < Test::Unit::TestCase
 		def setup
 			logo_path = File.expand_path('data/logo.png', 
@@ -185,5 +188,32 @@ Pilzstrasse 123
 					"could not find #{line} in the generated pdf")
 			}
 		end
+    def test_number_format
+      assert_equal "155",  @invoice.number_format('155')
+      assert_equal "15.5", @invoice.number_format('15.5')
+      assert_equal '1.55', @invoice.number_format('1.55')
+      assert_equal "1'555", @invoice.number_format('1555')
+      assert_equal "155.5", @invoice.number_format('155.5')
+      assert_equal '15.55', @invoice.number_format('15.55')
+      assert_equal '1.555', @invoice.number_format('1.555')
+      assert_equal "15'555",  @invoice.number_format('15555')
+      assert_equal "1'555.5", @invoice.number_format('1555.5')
+      assert_equal '155.55',  @invoice.number_format('155.55')
+      assert_equal '15.555',  @invoice.number_format('15.555')
+      assert_equal '1.5555',  @invoice.number_format('1.5555')
+      assert_equal "155'555",  @invoice.number_format('155555')
+      assert_equal "15'555.5", @invoice.number_format('15555.5')
+      assert_equal "1'555.55", @invoice.number_format('1555.55')
+      assert_equal "155.555",  @invoice.number_format('155.555')
+      assert_equal "15.5555",  @invoice.number_format('15.5555')
+      assert_equal "1.55555",  @invoice.number_format('1.55555')
+      assert_equal "1'555'555", @invoice.number_format('1555555')
+      assert_equal "155'555.5", @invoice.number_format('155555.5')
+      assert_equal "15'555.55", @invoice.number_format('15555.55')
+      assert_equal "1'555.555", @invoice.number_format('1555.555')
+      assert_equal "155.5555",  @invoice.number_format('155.5555')
+      assert_equal "15.55555",  @invoice.number_format('15.55555')
+      assert_equal "1.555555",  @invoice.number_format('1.555555')
+    end
 	end
 end

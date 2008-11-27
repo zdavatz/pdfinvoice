@@ -37,6 +37,11 @@ module PdfInvoice
 		def currency_format(amount, fmt='currency')
 			sprintf(@config.formats[fmt], amount)
 		end
+    def number_format(string)
+      string.reverse.gsub(/\d{3}(?=\d)(?!\d*\.)/) do |match|
+        match << "'"
+      end.reverse
+    end
 		def pdf_footer(pdf)
 			if(txt = @config.texts['thanks'])
 				pdf.move_pointer(pdf.font_height)
@@ -115,11 +120,12 @@ module PdfInvoice
 					cw = pdf.text_width(date) * PDF::SimpleTable::WIDTH_FACTOR
 					data = {
 						'date'				=> date,
-						'description'	=> line.at(1),
+						'description'	=> number_format(line.at(1)),
 						'unit'				=> line.at(2),
-						'quantity'		=> sprintf(@config.formats['quantity'], line.at(3)),
-						'price'				=> currency_format(line.at(4)),
-						'item_total'	=> currency_format(item_total),
+						'quantity'		=> number_format(sprintf(@config.formats['quantity'],
+                                                   line.at(3))),
+						'price'				=> number_format(currency_format(line.at(4))),
+						'item_total'	=> number_format(currency_format(item_total)),
 					}
 					calculate_column_widths(pdf, column_widths, data)
 					data
@@ -148,13 +154,13 @@ module PdfInvoice
 				table.column_order = ['date', 'total']
 				table.data = [
 					{	'date' => @config.texts['subtotal'], 
-						'total' => currency_format(total, 'total')},
+						'total' => number_format(currency_format(total, 'total'))},
 					{	'date' => @config.texts['tax'], 
-						'total' => currency_format(total * @config.tax.to_f, 
-							'total') },
+						'total' => number_format(currency_format(total * @config.tax.to_f, 
+							'total')) },
 					{	'date' => @config.texts['total'], 
-						'total' => currency_format(total * (1 + @config.tax.to_f),
-							'total') },
+						'total' => number_format(currency_format(total * (1 + @config.tax.to_f),
+							'total')) },
 				]
 				table.show_headings = false
 				table.position = left
