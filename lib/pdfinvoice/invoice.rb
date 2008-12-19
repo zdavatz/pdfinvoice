@@ -84,6 +84,7 @@ module PdfInvoice
 			pdf.start_columns(1)
 			pdf.move_pointer(pdf.font_height)
 			total = 0.0
+      vat = 0.0
 			left = 0
 			width = 0
 			row_gap = 4
@@ -115,6 +116,7 @@ module PdfInvoice
 				}
 				table.data = @items.collect { |line|
 					item_total = line.at(3).to_f * line.at(4).to_f
+          vat += line[5] || @config.tax.to_f * item_total
 					total += item_total
 					date = line.at(0).strftime(@config.formats['date'])
 					cw = pdf.text_width(date) * PDF::SimpleTable::WIDTH_FACTOR
@@ -156,11 +158,9 @@ module PdfInvoice
 					{	'date' => @config.texts['subtotal'], 
 						'total' => number_format(currency_format(total, 'total'))},
 					{	'date' => @config.texts['tax'], 
-						'total' => number_format(currency_format(total * @config.tax.to_f, 
-							'total')) },
+						'total' => number_format(currency_format(vat, 'total')) },
 					{	'date' => @config.texts['total'], 
-						'total' => number_format(currency_format(total * (1 + @config.tax.to_f),
-							'total')) },
+						'total' => number_format(currency_format(total + vat, 'total')) },
 				]
 				table.show_headings = false
 				table.position = left
