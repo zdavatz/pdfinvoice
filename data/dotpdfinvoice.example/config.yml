@@ -5,7 +5,7 @@ creditor_address: |
  Winterthurerstrasse 52
  8006 Zürich
 creditor_bank: |
- MwSt-Nummer: 612 860
+ MwSt-Nummer: CHE-112.233.959
  UBS-Römerhof Zürich
  Kontonummer: 808888.01M, Clearingnummer: 251
  IBAN: CH450025125180888801M
@@ -18,7 +18,7 @@ logo_path: /etc/pdfinvoice/logo.png
 logo_link: 
  :type: :external
  :target: http://www.ywesee.com
-tax: 0.076
+tax: 0.080
 texts:
  date: Datum
  description: Beschreibung
@@ -27,6 +27,6 @@ texts:
  price: Stückpreis
  item_total: Betrag
  subtotal: Zwischensumme
- tax: MwSt 7.6%
+ tax: MwSt 8.0%
  thanks: Thank you for your patronage
  total: Fälliger Betrag
